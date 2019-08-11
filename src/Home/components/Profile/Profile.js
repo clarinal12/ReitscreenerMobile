@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Body, Text, Card, CardItem } from "native-base";
+import { shape } from "prop-types";
+import { Button, Text } from "native-base";
 import CoreLayout from "../CoreLayout";
 
 const Profile = props => {
@@ -7,13 +8,6 @@ const Profile = props => {
 
   return (
     <CoreLayout {...props} title="Profile">
-      <Card>
-        <CardItem>
-          <Body>
-            <Text>Chat App to talk some awesome people!</Text>
-          </Body>
-        </CardItem>
-      </Card>
       <Button
         full
         rounded
@@ -34,6 +28,14 @@ const Profile = props => {
       </Button>
     </CoreLayout>
   );
+};
+
+Profile.propTypes = {
+  navigation: shape({})
+};
+
+Profile.defaultProps = {
+  navigation: {}
 };
 
 export default Profile;

@@ -1,20 +1,15 @@
 import React from "react";
 import { shape } from "prop-types";
-import { Button, Body, Text, Card, CardItem } from "native-base";
+import { Button, Text } from "native-base";
+import AsyncStorage from "@react-native-community/async-storage";
+import { withRouter } from "react-router-native";
 import CoreLayout from "../CoreLayout";
 
 const Dashboard = props => {
-  const { navigation } = props;
+  const { navigation, history } = props;
 
   return (
     <CoreLayout {...props} title="Dashboard">
-      <Card>
-        <CardItem>
-          <Body>
-            <Text>Chat App to talk some awesome people!</Text>
-          </Body>
-        </CardItem>
-      </Card>
       <Button
         full
         rounded
@@ -33,16 +28,34 @@ const Dashboard = props => {
       >
         <Text>Go to Profiles</Text>
       </Button>
+      <Button
+        full
+        rounded
+        light
+        style={{ marginTop: 10 }}
+        onPress={async () => {
+          try {
+            await AsyncStorage.removeItem("token");
+            history.push("/login");
+          } catch (e) {
+            // saving error
+          }
+        }}
+      >
+        <Text>Logout</Text>
+      </Button>
     </CoreLayout>
   );
 };
 
 Dashboard.propTypes = {
-  navigation: shape({})
+  navigation: shape({}),
+  history: shape({})
 };
 
 Dashboard.defaultProps = {
-  navigation: {}
+  navigation: {},
+  history: {}
 };
 
-export default Dashboard;
+export default withRouter(Dashboard);

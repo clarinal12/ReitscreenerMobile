@@ -1,84 +1,112 @@
-import React from "react";
+import React, { useState } from "react";
 import { func, shape } from "prop-types";
-import { View } from "react-native";
-import { Form, Input, Item, Button, Text } from "native-base";
+import { withRouter } from "react-router-native";
+import _ from "lodash";
+import axios from "axios";
+import { print } from "graphql";
+import AsyncStorage from "@react-native-community/async-storage";
+import { Input, Item, Button, Text, Label, Spinner } from "native-base";
 import { withFormik } from "formik";
+import { SIGN_IN } from "./mutations";
+import InputFeedback from "../../../components/InputFeedback";
+import FormGroup from "../../../components/FormGroup";
 import validationSchema from "./validationSchema";
 
 const LoginForm = props => {
-  const { handleChange, handleBlur, handleSubmit, values, errors } = props;
+  const { handleChange, handleBlur, values, errors, touched, history } = props;
+  const emailError = errors.email && touched.email;
+  const passwordError = errors.password && touched.password;
+  const [loading, setLoading] = useState(false);
+  const [signInError, setSignInError] = useState(null);
+
   return (
-    <View style={{ width: "100%" }}>
-      {/* <Input
-        placeholder="Email"
-        leftIcon={{ type: "font-awesome", name: "user" }}
-        leftIconContainerStyle={{ marginRight: 15 }}
-        containerStyle={{ marginBottom: 15 }}
-        errorMessage={errors.email || null}
-        onChangeText={handleChange("email")}
-        onBlur={handleBlur("email")}
-        value={values.email}
-      />
-      <Input
-        placeholder="Password"
-        leftIcon={{ type: "font-awesome", name: "lock" }}
-        leftIconContainerStyle={{ marginRight: 15 }}
-        containerStyle={{ marginBottom: 15 }}
-        errorMessage={errors.password || null}
-        onChangeText={handleChange("password")}
-        onBlur={handleBlur("password")}
-        value={values.password}
-      />
-      <Button
-        title="Login"
-        buttonStyle={{ marginTop: 20 }}
-        onPress={handleSubmit}
-      /> */}
-      <Form>
-        <Item>
+    <>
+      <FormGroup>
+        {signInError && <Text>Login Error</Text>}
+        <Item error={emailError} stackedLabel>
+          <Label>Email</Label>
           <Input
-            placeholder="Username"
+            autoCompleteType="email"
             onChangeText={handleChange("email")}
             onBlur={handleBlur("email")}
             value={values.email}
+            autoCapitalize="none"
+            keyboardType="email-address"
           />
         </Item>
-        <Item last>
+        {emailError && <InputFeedback>{errors.email}</InputFeedback>}
+      </FormGroup>
+      <FormGroup>
+        <Item error={passwordError} stackedLabel>
+          <Label>Password</Label>
           <Input
-            placeholder="Password"
             onChangeText={handleChange("password")}
             onBlur={handleBlur("password")}
             value={values.password}
+            secureTextEntry
+            autoCapitalize="none"
           />
         </Item>
-        <Button full primary>
-          <Text> Login </Text>
-        </Button>
-      </Form>
-    </View>
+        {passwordError && <InputFeedback>{errors.password}</InputFeedback>}
+      </FormGroup>
+      <Button
+        full
+        primary
+        style={{ marginTop: 20 }}
+        onPress={async () => {
+          if (!_.isEmpty(errors)) return;
+          setSignInError(null);
+          setLoading(true);
+          const response = await axios.post(
+            "http://dev-api.reitscreener.com/graphql",
+            {
+              query: print(SIGN_IN),
+              variables: {
+                input: { username: values.email, password: values.password }
+              }
+            }
+          );
+          const { data } = response;
+          if (data.errors && data.errors.length) {
+            setSignInError(data.errors[0].message);
+          } else {
+            try {
+              await AsyncStorage.setItem(
+                "token",
+                data.data.createAccessToken.token
+              );
+              history.push("/");
+            } catch (e) {
+              // saving error
+            }
+          }
+          setLoading(false);
+        }}
+      >
+        {loading ? <Spinner /> : <Text>Sign in</Text>}
+      </Button>
+    </>
   );
 };
 
 LoginForm.propTypes = {
   handleChange: func,
   handleBlur: func,
-  handleSubmit: func,
   values: shape({}),
-  errors: shape({})
+  errors: shape({}),
+  touched: shape({}),
+  history: shape({})
 };
 
 LoginForm.defaultProps = {
   handleChange: e => e,
   handleBlur: e => e,
-  handleSubmit: e => e,
   values: {},
-  errors: {}
+  errors: {},
+  touched: {},
+  history: {}
 };
 
 export default withFormik({
-  mapPropsToValues: () => ({}),
-  handleSubmit: async (values, { resetForm }) => {
-    console.log({ values });
-  },
   validationSchema
-})(LoginForm);
+})(withRouter(LoginForm));
