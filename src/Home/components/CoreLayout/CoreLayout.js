@@ -1,5 +1,5 @@
 import React from "react";
-// import { Button, ThemeProvider } from "react-native-elements";
+import { shape, string, node } from "prop-types";
 import {
   Container,
   Header,
@@ -9,10 +9,7 @@ import {
   Right,
   Button,
   Body,
-  Content,
-  Text,
-  Card,
-  CardItem
+  Content
 } from "native-base";
 
 const CoreLayout = props => {
@@ -34,6 +31,18 @@ const CoreLayout = props => {
       <Content padder>{children}</Content>
     </Container>
   );
+};
+
+CoreLayout.propTypes = {
+  navigation: shape({}),
+  title: string,
+  children: node
+};
+
+CoreLayout.defaultProps = {
+  navigation: {},
+  title: string,
+  children: null
 };
 
 export default CoreLayout;

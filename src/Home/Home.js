@@ -1,9 +1,9 @@
 import React from "react";
+import { DrawerNavigator } from "react-navigation";
 import SideBar from "./components/SideBar";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import AuthLoading from "./components/AuthLoading";
-import { DrawerNavigator } from "react-navigation";
 
 const Home = DrawerNavigator(
   {

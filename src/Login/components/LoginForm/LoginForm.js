@@ -1,51 +1,84 @@
 import React from "react";
-import { Form } from "native-base";
-import { Input, Button } from "react-native-elements";
-import { Formik } from "formik";
+import { func, shape } from "prop-types";
+import { View } from "react-native";
+import { Form, Input, Item, Button, Text } from "native-base";
+import { withFormik } from "formik";
+import validationSchema from "./validationSchema";
 
-const LoginForm = () => {
+const LoginForm = props => {
+  const { handleChange, handleBlur, handleSubmit, values, errors } = props;
   return (
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      onSubmit={values => console.log({ values })}
-    >
-      {props => {
-        console.log({ props });
-        return (
-          <Form style={{ width: "100%" }}>
-            <Input
-              placeholder="Email"
-              leftIcon={{ type: "font-awesome", name: "user" }}
-              leftIconContainerStyle={{ marginRight: 15 }}
-              containerStyle={{ marginBottom: 15 }}
-              onChangeText={props.handleChange("email")}
-              onBlur={props.handleBlur("email")}
-              value={props.values.email}
-            />
-            <Input
-              placeholder="Password"
-              leftIcon={{ type: "font-awesome", name: "lock" }}
-              leftIconContainerStyle={{ marginRight: 15 }}
-              containerStyle={{ marginBottom: 15 }}
-              onChangeText={props.handleChange("password")}
-              onBlur={props.handleBlur("password")}
-              value={props.values.password}
-            />
-            <Button
-              title="Login"
-              buttonStyle={{ marginTop: 20 }}
-              onPress={props.handleSubmit}
-            />
-            <Input
-              placeholder="INPUT WITH ERROR MESSAGE"
-              errorStyle={{ color: "red" }}
-              errorMessage="ENTER A VALID ERROR HERE"
-            />
-          </Form>
-        );
-      }}
-    </Formik>
+    <View style={{ width: "100%" }}>
+      {/* <Input
+        placeholder="Email"
+        leftIcon={{ type: "font-awesome", name: "user" }}
+        leftIconContainerStyle={{ marginRight: 15 }}
+        containerStyle={{ marginBottom: 15 }}
+        errorMessage={errors.email || null}
+        onChangeText={handleChange("email")}
+        onBlur={handleBlur("email")}
+        value={values.email}
+      />
+      <Input
+        placeholder="Password"
+        leftIcon={{ type: "font-awesome", name: "lock" }}
+        leftIconContainerStyle={{ marginRight: 15 }}
+        containerStyle={{ marginBottom: 15 }}
+        errorMessage={errors.password || null}
+        onChangeText={handleChange("password")}
+        onBlur={handleBlur("password")}
+        value={values.password}
+      />
+      <Button
+        title="Login"
+        buttonStyle={{ marginTop: 20 }}
+        onPress={handleSubmit}
+      /> */}
+      <Form>
+        <Item>
+          <Input
+            placeholder="Username"
+            onChangeText={handleChange("email")}
+            onBlur={handleBlur("email")}
+            value={values.email}
+          />
+        </Item>
+        <Item last>
+          <Input
+            placeholder="Password"
+            onChangeText={handleChange("password")}
+            onBlur={handleBlur("password")}
+            value={values.password}
+          />
+        </Item>
+        <Button full primary>
+          <Text> Login </Text>
+        </Button>
+      </Form>
+    </View>
   );
 };
 
-export default LoginForm;
+LoginForm.propTypes = {
+  handleChange: func,
+  handleBlur: func,
+  handleSubmit: func,
+  values: shape({}),
+  errors: shape({})
+};
+
+LoginForm.defaultProps = {
+  handleChange: e => e,
+  handleBlur: e => e,
+  handleSubmit: e => e,
+  values: {},
+  errors: {}
+};
+
+export default withFormik({
+  mapPropsToValues: () => ({}),
+  handleSubmit: async (values, { resetForm }) => {
+    console.log({ values });
+  },
+  validationSchema
+})(LoginForm);

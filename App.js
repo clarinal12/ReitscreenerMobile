@@ -15,7 +15,6 @@ import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
 import { InMemoryCache } from "apollo-cache-inmemory";
-
 import Login from "./src/Login";
 import Signup from "./src/Signup";
 import Home from "./src/Home";
@@ -25,9 +24,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  // const token = await AsyncStorage.getItem("accessToken");
-  const token = null;
-  // const token = "sampleToken";
+  const token = await AsyncStorage.getItem("accessToken");
 
   return {
     headers: {

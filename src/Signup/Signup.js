@@ -1,11 +1,11 @@
 import React from "react";
-import { Button, ThemeProvider } from "react-native-elements";
+import { Button, View } from "native-base";
 
 const Signup = () => {
   return (
-    <ThemeProvider>
+    <View>
       <Button title="Signup!" />
-    </ThemeProvider>
+    </View>
   );
 };
 

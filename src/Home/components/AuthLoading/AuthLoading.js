@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { withRouter } from "react-router";
+import { useEffect } from "react";
+import { withRouter } from "react-router-native";
 import { AsyncStorage } from "@react-native-community/async-storage";
-import { Button } from "react-native-elements";
 
 const AuthLoading = props => {
   const { navigation, history } = props;

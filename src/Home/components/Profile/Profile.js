@@ -1,7 +1,6 @@
 import React from "react";
-// import { Button, ThemeProvider } from "react-native-elements";
-import CoreLayout from "../CoreLayout";
 import { Button, Body, Text, Card, CardItem } from "native-base";
+import CoreLayout from "../CoreLayout";
 
 const Profile = props => {
   const { navigation } = props;

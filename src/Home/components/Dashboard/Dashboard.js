@@ -1,7 +1,7 @@
 import React from "react";
-// import { Button, ThemeProvider } from "react-native-elements";
-import CoreLayout from "../CoreLayout";
+import { shape } from "prop-types";
 import { Button, Body, Text, Card, CardItem } from "native-base";
+import CoreLayout from "../CoreLayout";
 
 const Dashboard = props => {
   const { navigation } = props;
@@ -35,6 +35,14 @@ const Dashboard = props => {
       </Button>
     </CoreLayout>
   );
+};
+
+Dashboard.propTypes = {
+  navigation: shape({})
+};
+
+Dashboard.defaultProps = {
+  navigation: {}
 };
 
 export default Dashboard;

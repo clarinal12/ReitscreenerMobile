@@ -1,7 +1,6 @@
 import React from "react";
-import { Content, View } from "native-base";
+import { Content } from "native-base";
 import LoginForm from "./components/LoginForm";
-import Home from "../Home";
 
 const Login = () => {
   return (
