@@ -170,14 +170,14 @@ export default {
 
   // Header
   toolbarBtnColor: "#f8f9fa",
-  toolbarDefaultBg: "#675bf5",
+  toolbarDefaultBg: "#030c14",
   toolbarHeight: 56,
   toolbarSearchIconSize: 23,
   toolbarInputColor: "#fff",
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 40 : 50,
   toolbarBtnTextColor: "#fff",
-  toolbarDefaultBorder: "#3F51B5",
+  toolbarDefaultBorder: "#343a40",
   iosStatusbar: "light-content",
   get statusBarColor() {
     return color(this.toolbarDefaultBg)
