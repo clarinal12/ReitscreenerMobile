@@ -246,7 +246,7 @@ export default {
   segmentBorderColorMain: "#3F51B5",
 
   // Spinner
-  defaultSpinnerColor: "#45D56E",
+  defaultSpinnerColor: "#f8f9fa",
   inverseSpinnerColor: "#1A191B",
 
   // Tab
@@ -272,8 +272,8 @@ export default {
   titleFontfamily: "Roboto",
   titleFontSize: 19,
   subTitleFontSize: 14,
-  subtitleColor: "#FFF",
-  titleFontColor: "#FFF",
+  subtitleColor: "#f8f9fa",
+  titleFontColor: "#f8f9fa",
 
   // Other
   borderRadiusBase: 2,
