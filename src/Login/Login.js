@@ -1,20 +1,21 @@
 import React from "react";
+import { shape } from "prop-types";
 import {
   Content,
   Container,
-  Header,
-  Title,
   Body,
   Card,
   CardItem,
-  View,
   Text,
-  Button
+  Button,
+  View
 } from "native-base";
 import { Image } from "react-native";
+import { withRouter } from "react-router-native";
 import LoginForm from "./components/LoginForm";
 
-const Login = () => {
+const Login = props => {
+  const { history } = props;
   return (
     <Container>
       {/* <Header noShadow>
@@ -47,21 +48,22 @@ const Login = () => {
           <CardItem>
             <Body>
               <LoginForm />
-              {/* <View
+              <View
                 style={{
-                  marginTop: 40,
                   alignSelf: "center",
                   alignItems: "center",
-                  marginBottom: 20
+                  marginTop: 30
                 }}
               >
-                <Text primary>
-                  Don't have an account?
-                  <Button></Button>
-                  Sign up for free
-                </Text>
-                <Text primary>Forgot your password? Reset it</Text>
-              </View> */}
+                <Text>Don't have an account?</Text>
+                <Button
+                  primary
+                  transparent
+                  onPress={() => history.push("signup")}
+                >
+                  <Text>Sign up for free</Text>
+                </Button>
+              </View>
             </Body>
           </CardItem>
         </Card>
@@ -70,4 +72,12 @@ const Login = () => {
   );
 };
 
-export default Login;
+Login.propTypes = {
+  history: shape({})
+};
+
+Login.defaultProps = {
+  history: {}
+};
+
+export default withRouter(Login);
